@@ -3,6 +3,43 @@
     <title>Клеточный автомат</title>
   </head>
   <body>
-    <h1>Страница-заготовка для проекта клеточного автомата</h1>
+    <div id="panel">
+      <div id="settings">
+        <div class="defauld">
+          <div class="param">
+			<p>
+				<input type="checkbox" name="wrap">Сшить края
+			</p>
+          </div>
+          <div class="param">
+			<p>
+				Число соседей для зарождения:<input type="number" name="nborn" min="2" max="7">
+			</p>
+          </div>
+          <div class="param">
+			<p>
+				Число соседей для вымирания:<input type="number" name="ndie" min="0" max="8">
+			</p>
+          </div>
+		  <div class="param">
+          
+          </div>
+		  <div class="param">
+          
+          </div>
+        </div>
+        <div class="controls">
+          <button id="start_button">Start</button>
+          <button id="pause_button">Pause</button>
+          <button id="stop_button">Stop</button>
+        </div>
+      </div>
+      <div id="collapse">
+        
+      </div>
+    </div>
+    <div id="board">
+      
+    </div>
   </body>
 </html>
