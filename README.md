@@ -1,7 +1,7 @@
 # IT_LR2_Project
 SPA-приложение по курсу ИТ
 
-(Открыть приложение)[https://alinayubko.github.io/IT_LR2_Project/]
+[Открыть приложение](https://alinayubko.github.io/IT_LR2_Project/)
 
 Состав команды:
   1. Германов Никита
