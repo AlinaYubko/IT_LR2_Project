@@ -1,67 +1,76 @@
-<html>
-  <head>
-    <title>Клеточный автомат</title>
-  </head>
-  <body>
-    <div id="panel">
-      <div id="settings">
-        <div class="default">
-          <div class="param">
-			<p>
-				<input type="checkbox" name="wrap">Сшить края
-			</p>
-          </div>
-          <div class="param">
-			<p>
-				Число соседей для зарождения:<input type="number" name="nborn" min="2" max="7">
-			</p>
-          </div>
-          <div class="param">
-			<p>
-				Число соседей для вымирания:<input type="number" name="ndie" min="0" max="8">
-			</p>
-          </div>
-		  <div class="param">
-			<select id="config">
-				<option value="glider">Планер</option>
-				<option value="spaceship">Космический корабль</option>
-				<option value="gun">Ружьё</option>
-				<option value="eater">Пожиратель</option>
-				<option value="reflector">Отражатель</option>
-			</select>
-			<button id="select_config">Выбрать</button>
-          </div>
-		  <div class="param">
-			<button id="save_config">Сохранить</button>
-          </div>
-		  <div class="param">
-          
-          </div>
-		  <div class="param">
-          
-          </div>
-		  <div class="param">
-          
-          </div>
-		  <div class="param">
-          
-          </div>
-		  <div class="param">
-          
-          </div>
-        </div>
-        <div class="controls">
-          <button id="start_button">Start</button>
-          <button id="pause_button">Pause</button>
-          <button id="stop_button">Stop</button>
-        </div>
-      </div>
-      <div id="collapse">
-        
-      </div>
-    </div>
-    <div id="board">
-      
-    </div>
-  </body>
-</html>
+	<html>
+		<head>
+			<title>Клеточный автомат</title>
+		</head>
+		<body>
+			<div id="panel">
+				<div id="settings">
+					<div class="default">
+						<div class="param">
+							<p>
+								<input type="checkbox" name="wrap">Сшить края
+							</p>
+						</div>
+						<div class="param">
+							<p>
+								Число соседей для зарождения:<input type="number" name="nborn" min="2" max="7">
+							</p>
+						</div>
+						<div class="param">
+							<p>
+								Число соседей для вымирания:<input type="number" name="ndie" min="0" max="8">
+							</p>
+						</div>
+						<div class="param">
+							<select id="config">
+								<option value="glider">Планер</option>
+								<option value="spaceship">Космический корабль</option>
+								<option value="gun">Ружьё</option>
+								<option value="eater">Пожиратель</option>
+								<option value="reflector">Отражатель</option>
+							</select>
+							<button id="select_config">Выбрать</button>
+						</div>
+						<div class="param">
+							<button id="save_config">Сохранить</button>
+						</div>
+						<div class="param"></div>
+						<div class="param"></div>
+						<div class="param"></div>
+						<div class="param"></div>
+						<div class="param"></div>
+					</div>
+					<div class="controls">
+						<button id="start_button">Start</button>
+						<button id="pause_button">Pause</button>
+						<button id="stop_button">Stop</button>
+					</div>
+					<div id="sets-settings">
+						<h4>Наборы</h4>
+						<div id="sets">
+			  
+						</div>
+						<button id="add_set">+</button>
+						<button id="zem_set">-</button>
+					</div>
+				</div>
+				<div id="collapse">
+			
+				</div>
+			</div>
+			<div id="board">
+		  
+			</div>
+			<div id="info">
+				<div id="info_general" class="info">
+			
+				</div>
+				<div id="info_about" class="info">
+			
+				</div>
+				<div id="info_dev" class="info">
+			
+				</div>
+			</div>
+		</body>
+	</html>
