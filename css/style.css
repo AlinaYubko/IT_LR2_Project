@@ -1,1 +1,233 @@
+* {
+	margin: 0;
+	padding: 0;
+	font-family: "Segoe UI",Arial,sans-serif;
+}
+
+/* panel */
+
+div#panel{
+	padding: 4px;
+	position: fixed;
+	left: 40px;
+	top: -1px;
+	width: 280px;
+	background: #f9f9f9;
+	border: 1px solid #bbbbbb;
+	overflow: hidden;
+}
+
+.settings-normal {
+	max-height: 800px;
+	transition: all 0.5s;
+}
+
+.settings-collapsed {
+	max-height: 0px;
+	overflow: hidden;
+	transition: all 0.25s;
+}
+
+/* collapse */
+
+div#collapse {
+	height: 24px;
+	border: 1px solid #bbbbbb;
+	background: #ececec;
+	border: 2px solid transparent;
+	box-shadow: 0 0 0 2px #transparent;
+	text-align: center;
+	font-weight:bold;
+	font-size: 16px;
+	line-height: 24px;
+	color: #6d6d6d;
+    text-decoration: none;
+    cursor: pointer;
+ 	outline: none;
+	border-radius: 16px;
+	transition: background 0.15s, box-shadow 0.15s, border 0.15s, color 0.15s;
+}
+
+div#collapse:hover {
+	background: #e2e2e2;
+}
+
+div#collapse:active {
+	color: white;
+	background: #bfbfbf;
+	border: 2px solid white;
+	box-shadow: 0 0 0 2px #bbbbbb;
+}
+
+/* param */
+
+div.param {
+	margin-top: 4px;
+	margin-bottom: 4px;
+	border-radius: 1px;
+	padding: 4px;
+	border-top: 1px solid #e8e8e8;
+	border-bottom: 1px solid #d2d2d2;
+	background: linear-gradient(to right, rgba(30,87,153,0) 0%,rgb(239, 239, 239) 50%,rgba(32,124,202,0) 100%);
+}
+
+/* control buttons */
+
+#start_button {
+	margin: 8px;
+	border: 2px solid transparent;
+	box-shadow: 0 0 0 2px #transparent;
+	text-align: center;
+	font-weight:bold;
+	font-size: 16px;
+	line-height: 16px;
+	color: white;
+    text-decoration: none;
+    cursor: pointer;
+ 	outline: none;
+	width:80px;
+	height: 32px;
+	background: #08ec08;
+	border-radius: 16px;
+	transition: background 0.15s, box-shadow 0.15s, border 0.15s;
+}
+
+#start_button:hover {
+	background: #1dd41d;
+}
+
+#start_button:active {
+	background: #16ab16;
+	border: 2px solid white;
+	box-shadow: 0 0 0 2px #006b00;
+}
+
+#pause_button {
+	margin: 8px 8px 8px 0px;
+	border: 2px solid transparent;
+	box-shadow: 0 0 0 2px #transparent;
+	text-align: center;
+	font-weight:bold;
+	font-size: 16px;
+	line-height: 16px;
+	color: white;
+    text-decoration: none;
+    cursor: pointer;
+ 	outline: none;
+	width:80px;
+	height: 32px;
+	background: #0888ec;
+	border-radius: 16px;
+	transition: background 0.15s, box-shadow 0.15s, border 0.15s;
+}
+
+#pause_button:hover {
+	background: #327ab5;
+}
+
+#pause_button:active {
+	background: #27608e;
+	border: 2px solid white;
+	box-shadow: 0 0 0 2px #0003a5;
+}
+
+#stop_button {
+	margin: 8px 0 8px 0px;
+	border: 2px solid transparent;
+	box-shadow: 0 0 0 2px #transparent;
+	text-align: center;
+	font-weight:bold;
+	font-size: 16px;
+	line-height: 16px;
+	color: white;
+    text-decoration: none;
+    cursor: pointer;
+ 	outline: none;
+	width:80px;
+	height: 32px;
+	background: #f52c2c;
+	border-radius: 16px;
+	transition: background 0.15s, box-shadow 0.15s, border 0.15s;
+}
+
+#stop_button:hover {
+	background: #d85151;
+}
+
+#stop_button:active {
+	background: #921a1a;
+	border: 2px solid white;
+	box-shadow: 0 0 0 2px #710000;
+}
+
+/* set buttons */
+
+button#add_set {
+	margin: 8px 8px 8px 0px;
+	padding: -8px;
+	border: 2px solid transparent;
+	box-shadow: 0 0 0 2px #transparent;
+	text-align: center;
+	font-weight:bold;
+	font-size: 24px;
+	color: #1dd41d;
+    text-decoration: none;
+    cursor: pointer;
+ 	outline: none;
+	width:32px;
+	height: 32px;
+	background: #ececec;
+	border-radius: 16px;
+	transition: background 0.15s, box-shadow 0.15s, border 0.15s, color 0.15s;
+}
+
+button#add_set:hover {
+	background: #e2e2e2;
+}
+
+button#add_set:active {
+	color: white;
+	background: #16ab16;
+	border: 2px solid white;
+	box-shadow: 0 0 0 2px #006b00;
+}
+
+button#add_set span {
+	line-height: 11px;
+}
+
+button#zem_set {
+	margin: 8px 8px 8px 0px;
+	padding: -8px;
+	border: 2px solid transparent;
+	box-shadow: 0 0 0 2px #transparent;
+	text-align: center;
+	font-weight:bold;
+	font-size: 24px;
+	color: #f52c2c;
+    text-decoration: none;
+    cursor: pointer;
+ 	outline: none;
+	width:32px;
+	height: 32px;
+	background: #ececec;
+	border-radius: 16px;
+	transition: background 0.15s, box-shadow 0.15s, border 0.15s, color 0.15s;
+}
+
+button#zem_set:hover {
+	background: #e2e2e2;
+}
+
+button#zem_set:active {
+	color: white;
+	background: #921a1a;
+	border: 2px solid white;
+	box-shadow: 0 0 0 2px #710000;
+}
+
+button#zem_set span {
+	line-height: 11px;
+}
+
 
