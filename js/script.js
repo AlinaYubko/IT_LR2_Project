@@ -20,6 +20,33 @@ function setup(){
 			this.innerHTML = collapseIT;
 		}
 	}
+	
+	addNewSet();
+	
+	var addSet = document.getElementById("add_set");
+	addSet.onclick = function(){
+		addNewSet();
+	}
+	
+	var remSet = document.getElementById("zem_set");
+	remSet.onclick = function(){
+		remLastSet();
+	}
+}
+
+function addNewSet(){
+	var el = document.createElement("div");
+	el.className = "another_set";
+	var cont = document.getElementById("sets");
+	cont.appendChild(el);
+}
+
+function remLastSet(){
+	var cont = document.getElementById("sets");
+	if(cont.children.length >= 2){
+		console.log(cont.lastChild);
+		cont.removeChild(cont.lastChild);
+	}
 }
 
 window.onload = function(){

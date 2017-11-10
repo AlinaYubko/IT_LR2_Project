@@ -6,6 +6,17 @@
 
 /* general */
 
+h1, h2, h3, h4, h5, h6 {
+	color: #6d6d6d;
+}
+
+p {
+	font-weight:bold;
+	font-size: 14px;
+	line-height: 14px;
+	color: #6d6d6d;
+}
+
 input {
 	margin: 2px;
 	padding: 2px;
@@ -293,5 +304,50 @@ button#zem_set:active {
 button#zem_set span {
 	line-height: 11px;
 }
+
+/* sets */
+
+div#sets {
+	padding: 2px;
+	min-height: 120px;
+	height: 120px;
+	max-height: 120px;
+	overflow: auto;
+	border: 1px solid #bbbbbb;
+	background: #ffffff;
+	box-shadow: 0 0 0 2px #transparent;
+	text-align: center;
+	font-weight:bold;
+	font-size: 14px;
+	line-height: 14px;
+	color: #6d6d6d;
+    text-decoration: none;
+    cursor: pointer;
+ 	outline: none;
+	border-radius: 4px;	
+}
+
+div#sets > div:nth-child(odd) {
+	background: #eeeeee;
+	border-top: 1px solid #e8e8e8;
+	border-bottom: 1px solid #d2d2d2;
+}
+
+div#sets > div:nth-child(even) {
+	background: #fafafa;
+	border-top: 1px solid #e8e8e8;
+	border-bottom: 1px solid #d2d2d2;
+}
+
+div .another_set {
+	height: 24px;
+}
+
+
+
+
+
+
+
 
 
