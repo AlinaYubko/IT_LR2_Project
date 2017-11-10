@@ -78,6 +78,36 @@ button:active {
 	box-shadow: 0 0 0 2px #bbbbbb;
 }
 
+/* board */
+
+div#board {
+	padding: 150px;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+div#board > table {
+	padding: 0;
+	border-collapse: collapse;
+	border: 1px solid black;
+}
+
+div#board > table > tr {
+	padding: 0;
+	border: 1px solid black;
+}
+
+div#board > table > tr > td {
+	padding: 0;
+	border: 1px solid black;
+}
+
+div.cell {
+	width: 20px;
+	height: 20px;
+	/*border: 1px solid black;*/
+}
+
 /* panel */
 
 div#panel{
