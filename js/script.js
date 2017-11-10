@@ -90,8 +90,8 @@ function setup(){
 		}
 	}
 	
-	window.addEventListener("mousewheel", MouseWheelHandler, false);
-	window.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
+	board.addEventListener("mousewheel", MouseWheelHandler, false);
+	board.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
 }
 
 function MouseWheelHandler(e) {
