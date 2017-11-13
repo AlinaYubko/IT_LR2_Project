@@ -1,6 +1,7 @@
 // board size
 var boardWidth = 10;
 var boardHeight = 10;
+var boardMaxSize = 100;
 var board2D;
 
 // board move
@@ -13,6 +14,9 @@ var cellSize = 20;
 var cellSizeMin = 5;
 var cellSizeMax = 50;
 var cellSizeDelta = 2;
+var cellClass = "cell";
+var cellBlockClass = "cell cell-block";
+var cellWallClass = "cell cell-wall";
 
 function setup(){
 	var settings = document.getElementById("settings");
@@ -49,24 +53,10 @@ function setup(){
 		remLastSet();
 	}
 	
-	var board = document.getElementById('board');
-	var table = document.createElement('table');
-	for(var j = 0; j < boardHeight; j++){
-		var tr = document.createElement('tr');
-		
-		for(var i = 0; i < boardWidth; i++){
-			var td = document.createElement('td');
-			var cell = document.createElement('div');
-			cell.className = 'cell';
-			td.appendChild(cell);
-			
-			tr.appendChild(td);
-		}
-		
-		table.appendChild(tr);
-	}
+	// init board
+	board2D = board2DInit();
 	
-	board.appendChild(table);
+	boardSet(boardWidth, boardHeight);
 	
 	board.onmousedown = function(event){
 		boardMove = true;
@@ -108,6 +98,19 @@ function setup(){
 	//test
 }
 
+function board2DInit() {
+	board2D = [];
+	for(var j = 0; j < boardMaxSize; j++){
+		var col = [];
+		for(var i = 0; i < boardMaxSize; i++){
+			col[i] = 0;
+		}
+		board2D[j] = col;
+	}
+	
+	return board2D;
+}
+
 function onchangeBoardWH(){
 	var bWidthInput = document.getElementsByName("width")[0];
 	bWidthInput.disabled = true;
@@ -122,7 +125,53 @@ function onchangeBoardWH(){
 }
 
 function onclickCell(){
-	console.log("Cell [y: " + this.getAttribute("y") + "; x: " + this.getAttribute("x") + "]");
+	var that = this;
+	var x = this.getAttribute("x");
+	var y = this.getAttribute("y");
+	
+	if(board2D[y][x] == 0){
+		board2D[y][x] = 1;
+		console.log("Cell [y: " + y + "; x: " + x + "] - Set!");
+		
+		that.className = cellBlockClass;
+	}else{
+		board2D[y][x] = 0;
+		console.log("Cell [y: " + y + "; x: " + x + "] - Unset.");
+		
+		that.className = cellClass;
+	}
+}
+
+function onrightclickCell(e){
+	e.preventDefault();
+	
+	var that = e.target;
+	var x = e.target.getAttribute("x")
+	var y = e.target.getAttribute("y")
+	
+	if(board2D[y][x] == 0){
+		board2D[y][x] = -1;
+		console.log("Wall-Cell [y: " + y + "; x: " + x + "] - Set!");
+		
+		that.className = cellWallClass;
+	}else{
+		board2D[y][x] = 0;
+		console.log("Wall-Cell [y: " + y + "; x: " + x + "] - Unset.");
+		
+		that.className = cellClass;
+	}
+}
+
+function getCellClass(y, x){
+	if(board2D[y][x] == -1){
+		return cellWallClass;
+	}
+	
+	if(board2D[y][x] >= 1){
+		return cellBlockClass;
+	}
+	
+	return cellClass;
 }
 
 function boardSet(bWidth, bHeight){
@@ -143,16 +192,11 @@ function boardSet(bWidth, bHeight){
 		for(var i = 0; i < boardWidth; i++){
 			var td = document.createElement('td');
 			var cell = document.createElement('div');
-			if(Math.random() < 0.4){
-				cell.className = 'cell cell-wall';
-			}else if(Math.random() < 0.6){
-				cell.className = 'cell cell-block';
-			}else{
-				cell.className = 'cell';
-			}
+			cell.className = getCellClass(j, i)
 			cell.setAttribute("y", j);
 			cell.setAttribute("x", i);
 			cell.onclick = onclickCell;
+			cell.addEventListener("contextmenu", function(event){ onrightclickCell(event); });
 			td.appendChild(cell);
 			
 			tr.appendChild(td);
@@ -162,6 +206,10 @@ function boardSet(bWidth, bHeight){
 	}
 	
 	board.appendChild(table);
+}
+
+function updateBoard(){
+	
 }
 
 function MouseWheelHandler(e) {
