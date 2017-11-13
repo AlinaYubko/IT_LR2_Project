@@ -11,36 +11,33 @@
 					<div class="default">
 						<div class="param">
 							<p>
-								<input type="checkbox" name="wrap">Сшить края
+								<input type="checkbox" name="wrap"><text id="wrap_text">Сшить края</text>
 							</p>
 						</div>
 						<div class="param">
-							<p>Размерность поля:</p>
+							<p id="field_size">Размерность поля:</p>
 							<p>
-								Ширина:<input type="number" name="width" min="10" max="100">
+								<text id="width_text">Ширина:</text><input type="number" name="width" min="10" max="100">
 							</p>
 						</div>
 						<div class="param">
 							<p>
-								Высота:<input type="number" name="height" min="10" max="100">
+								<text id="height_text">Высота:</text><input type="number" name="height" min="10" max="100">
 							</p>
 						</div>
 						<div class="param">
 							<select id="config">
-								<option value="glider">Планер</option>
-								<option value="spaceship">Космический корабль</option>
-								<option value="gun">Ружьё</option>
-								<option value="eater">Пожиратель</option>
-								<option value="reflector">Отражатель</option>
+								<option value="glider"><text id="glider_text">Планер</text></option>
+								<option value="spaceship"><text id="spaceship_text">Космический корабль</text></option>
+								<option value="gun"><text id="gun_text">Ружьё</text></option>
+								<option value="eater"><text id="eater_text">Пожиратель</text></option>
+								<option value="reflector"><text id="reflector_text">Отражатель</text></option>
 							</select>
 							<button id="select_config">Выбрать</button>
 						</div>
 						<div class="param">
 							<button id="save_config">Сохранить</button>
 						</div>
-						<div class="param"></div>
-						<div class="param"></div>
-						<div class="param"></div>
 						<div class="param"></div>
 						<div class="param"></div>
 					</div>
@@ -50,7 +47,7 @@
 						<button id="stop_button">Stop</button>
 					</div>
 					<div id="sets-settings">
-						<h4>Наборы</h4>
+						<h4 id="sets_text">Наборы</h4>
 						<div id="sets">
 			  
 						</div>
@@ -75,6 +72,11 @@
 				<div id="info_dev" class="info">
 			
 				</div>
+			</div>
+			<div id="lang">
+				<button id="ru"><span>RU</span></button>
+				<button id="my"><span>MY</span></button>
+				<button id="en"><span>EN</span></button>
 			</div>
 		</body>
 	</html>
