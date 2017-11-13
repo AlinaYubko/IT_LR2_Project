@@ -1,6 +1,7 @@
 // board size
-var boardWidth = 100;
-var boardHeight = 100;
+var boardWidth = 10;
+var boardHeight = 10;
+var board2D;
 
 // board move
 var boardMove = false;
@@ -92,6 +93,75 @@ function setup(){
 	
 	board.addEventListener("mousewheel", MouseWheelHandler, false);
 	board.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
+	
+	var inputWidth = document.getElementsByName("width")[0];
+	inputWidth.value = boardWidth;
+	var inputHeight = document.getElementsByName("height")[0];
+	inputHeight.value = boardHeight;
+	inputWidth.onchange = function(){
+		onchangeBoardWH();
+	}
+	inputHeight.onchange = function(){
+		onchangeBoardWH();
+	}
+	
+	//test
+}
+
+function onchangeBoardWH(){
+	var bWidthInput = document.getElementsByName("width")[0];
+	bWidthInput.disabled = true;
+	var bHeightInput = document.getElementsByName("height")[0];
+	bHeightInput.disabled = true;
+	
+	boardSet(bWidthInput.value, bHeightInput.value);
+	
+	bWidthInput.disabled = false;
+	bHeightInput.disabled = false;
+	
+}
+
+function onclickCell(){
+	console.log("Cell [y: " + this.getAttribute("y") + "; x: " + this.getAttribute("x") + "]");
+}
+
+function boardSet(bWidth, bHeight){
+	var board = document.getElementById('board');
+	var table = board.children[0];
+	if(board.children.length > 0){
+		board.removeChild(table);
+	}
+	table = document.createElement('table');
+	
+	boardWidth = bWidth;
+	boardHeight = bHeight;
+	//board2D = 
+	
+	for(var j = 0; j < boardHeight; j++){
+		var tr = document.createElement('tr');
+		
+		for(var i = 0; i < boardWidth; i++){
+			var td = document.createElement('td');
+			var cell = document.createElement('div');
+			if(Math.random() < 0.4){
+				cell.className = 'cell cell-wall';
+			}else if(Math.random() < 0.6){
+				cell.className = 'cell cell-block';
+			}else{
+				cell.className = 'cell';
+			}
+			cell.setAttribute("y", j);
+			cell.setAttribute("x", i);
+			cell.onclick = onclickCell;
+			td.appendChild(cell);
+			
+			tr.appendChild(td);
+		}
+		
+		table.appendChild(tr);
+	}
+	
+	board.appendChild(table);
 }
 
 function MouseWheelHandler(e) {

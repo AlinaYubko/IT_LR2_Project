@@ -81,13 +81,13 @@ button:active {
 /* board */
 
 div#board {
-	padding: 150px;
+	padding: 100px 100px 100px 340px;
 	-webkit-user-select: none;
 	user-select: none;
 }
 
 div#board > table {
-	padding: 0;
+	padding: 100px 100px 100px 340px;
 	border-collapse: collapse;
 	border: 1px solid black;
 }
@@ -108,12 +108,37 @@ div.cell {
 	/*border: 1px solid black;*/
 }
 
+div.cell-wall {
+	border: 1px solid #ff0000;
+	/*background: linear-gradient(135deg, rgba(248,80,50,1) 0%,rgba(241,111,92,1) 50%,rgba(246,41,12,1) 51%,rgba(240,47,23,1) 71%,rgba(231,56,39,1) 100%);*/
+	background: repeating-linear-gradient(135deg, 
+        rgb(240,47,23), rgb(231,56,39) 12.5%, white 0, rgb(240, 240, 240) 37.5%);
+}
+
+div.cell-block {
+	border: 1px solid lime;
+	background: linear-gradient(135deg, rgba(180,227,145,1) 0%,rgba(97,196,25,1) 50%,rgba(180,227,145,1) 100%);
+}
+
+/* lang */
+
+div#lang {
+	padding: 4px;
+	position: fixed;
+	right: 20px;
+	top: -1px;
+	background: #f9f9f9;
+	border: 1px solid #bbbbbb;
+	border-radius: 0 0 18px 18px;
+	overflow: hidden;
+}
+
 /* panel */
 
 div#panel{
 	padding: 4px;
 	position: fixed;
-	left: 40px;
+	left: 20px;
 	top: -1px;
 	width: 280px;
 	background: #f9f9f9;
