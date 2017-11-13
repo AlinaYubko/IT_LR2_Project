@@ -128,6 +128,42 @@ div.cell-block-init {
 	/*background: linear-gradient(135deg, rgba(180,227,145,1) 0%,rgba(97,196,25,1) 50%,rgba(180,227,145,1) 100%);*/
 }
 
+/* cells predefined */
+
+.cell-0 {
+	border: 1px solid #0000ff;
+	background: linear-gradient(135deg, rgba(0,0,0,0.36) 0%,rgba(0,0,0,0.21) 50%,rgba(0,0,0,0.36) 100%), #0000ff;
+}
+.cell-1 {
+	border: 1px solid #00ff00;
+	background: linear-gradient(135deg, rgba(0,0,0,0.36) 0%,rgba(0,0,0,0.21) 50%,rgba(0,0,0,0.36) 100%), #00ff00;
+}
+.cell-2 {
+	border: 1px solid #ff0000;
+	background: linear-gradient(135deg, rgba(0,0,0,0.36) 0%,rgba(0,0,0,0.21) 50%,rgba(0,0,0,0.36) 100%), #ff0000;
+}
+.cell-3 {
+	border: 1px solid #ffff00;
+	background: linear-gradient(135deg, rgba(0,0,0,0.36) 0%,rgba(0,0,0,0.21) 50%,rgba(0,0,0,0.36) 100%), #ffff00;
+}
+.cell-4 {
+	border: 1px solid #ff00ff;
+	background: linear-gradient(135deg, rgba(0,0,0,0.36) 0%,rgba(0,0,0,0.21) 50%,rgba(0,0,0,0.36) 100%), #ff00ff;
+}
+.cell-5 {
+	border: 1px solid #00ffff;	
+	background: linear-gradient(135deg, rgba(0,0,0,0.36) 0%,rgba(0,0,0,0.21) 50%,rgba(0,0,0,0.36) 100%), #00ffff;
+}
+.cell-6 {
+	border: 1px solid #ffa600;
+	background: linear-gradient(135deg, rgba(0,0,0,0.36) 0%,rgba(0,0,0,0.21) 50%,rgba(0,0,0,0.36) 100%), #ffa600;
+}
+.cell-7 {
+	border: 1px solid #9900ff;
+	background: linear-gradient(135deg, rgba(0,0,0,0.36) 0%,rgba(0,0,0,0.21) 50%,rgba(0,0,0,0.36) 100%), #9900ff;
+}
+
+
 /* lang */
 
 div#lang {
@@ -328,6 +364,25 @@ button#add_set:active {
 	background: #16ab16;
 	border: 2px solid white;
 	box-shadow: 0 0 0 2px #006b00;
+}
+
+button#add_set:disabled{
+	margin: 8px 8px 8px 0px;
+	padding: -8px;
+	border: 2px solid transparent;
+	box-shadow: 0 0 0 2px #transparent;
+	text-align: center;
+	font-weight:bold;
+	font-size: 24px;
+	color: #6d6d6d;
+    text-decoration: none;
+    cursor: pointer;
+ 	outline: none;
+	width:32px;
+	height: 32px;
+	background: #ececec;
+	border-radius: 16px;
+	transition: background 0.15s, box-shadow 0.15s, border 0.15s, color 0.15s;
 }
 
 button#add_set span {

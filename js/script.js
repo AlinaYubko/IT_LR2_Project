@@ -16,12 +16,15 @@ var cellSizeMin = 5;
 var cellSizeMax = 50;
 var cellSizeDelta = 2;
 var cellClass = "cell";
+var cellClassPrefix = "cell cell-";
 var cellBlockClass = "cell cell-block";
 var cellWallClass = "cell cell-wall";
+var cellStyleBGPart = "linear-gradient(135deg, rgba(0,0,0,0.36) 0%,rgba(0,0,0,0.21) 50%,rgba(0,0,0,0.36) 100%)";
 
 // cells
 var cellTypes = [];
 var currentCellType = 1;
+var maxCellTypes = 7;
 
 function setup(){
 	var settings = document.getElementById("settings");
@@ -140,10 +143,10 @@ function onclickCell(){
 	var y = this.getAttribute("y");
 	
 	if(board2D[y][x] == 0){
-		board2D[y][x] = 1;
-		console.log("Cell [y: " + y + "; x: " + x + "] - Set!");
+		board2D[y][x] = currentCellType;
+		console.log("Cell [y: " + y + "; x: " + x + "] - Set to " + currentCellType + "!");
 		
-		that.className = cellBlockClass;
+		that.className = cellClass + " " + cellClassPrefix + (currentCellType-1);
 	}else{
 		board2D[y][x] = 0;
 		console.log("Cell [y: " + y + "; x: " + x + "] - Unset.");
@@ -178,7 +181,7 @@ function getCellClass(y, x){
 	}
 	
 	if(board2D[y][x] >= 1){
-		return cellBlockClass;
+		return cellClassPrefix + (board2D[y][x]-1);
 	}
 	
 	return cellClass;
@@ -229,7 +232,7 @@ function MouseWheelHandler(e) {
 	var e = window.event || e; // old IE support
 	var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
 	
-	console.log("delta " + delta);
+	//console.log("delta " + delta);
 	if(delta > 0 || delta < 0){
 		if(delta > 0){
 			cellSize += cellSizeDelta;
@@ -273,6 +276,8 @@ function initSets(){
 	cont.appendChild(setsTable);
 	
 	addNewSet();
+	var blockDrawing = document.getElementsByName("blockDrawing");
+	blockDrawing[0].checked = true;
 }
 
 function randomColor(){
@@ -293,16 +298,31 @@ function addNewSet(){
 	var types = ["radio", "color", "number", "number", "checkbox"];
 	var nToSpawn = 1 + Math.floor(Math.random() * 6);
 	var nToDie = nToSpawn + 1 + Math.floor((8 - nToSpawn) * Math.random());
-	console.log("S: " + nToSpawn + ", D: " + nToDie);
-	var values = [null, randomColor(), nToSpawn, nToDie, (Math.random >= 0.5 ? true : false)];
+	//console.log("S: " + nToSpawn + ", D: " + nToDie);
+	var values = [null, null, nToSpawn, nToDie, (Math.random >= 0.5 ? true : false)];
 	for(var i = 0; i < 5; i++){
 		var input = document.createElement("input");
 		input.setAttribute("type", types[i]);
 		if(i == 0){
 			input.setAttribute("name", "blockDrawing");
+			input.onchange = function(){
+				var blockDrawing = document.getElementsByName("blockDrawing");
+				for(var i = 0; i < blockDrawing.length; i++){
+					if(blockDrawing[i].checked){
+						currentCellType = i + 1;
+						console.log("drawing block changed - #" + currentCellType);
+						break;
+					}
+				}
+			}
+		}
+		if(i == 1){
+			input = document.createElement("div");
+			input.className = ("cell-" + n);
+			input.style = "width: 16px; height: 16px; margin: auto;";
 		}
 		if(i < 4){
-			console.log("v: " + values[i]);
+			//console.log("v: " + values[i]);
 			input.value = values[i];
 		}else{
 			input.checked = values[i];
@@ -316,10 +336,29 @@ function addNewSet(){
 	rem.disabled = false;
 	
 	cellTypes[n] = {color: values[0], spawn: nToSpawn, die: nToDie, unique: values[3]};
+	
+	var add = document.getElementById("add_set");
+	if(n >= maxCellTypes){
+		add.disabled = true;
+	}else{
+		add.disabled = false;
+	}
+}
+
+function setDrawingBlock(){
+	
 }
 
 function remLastSet(){
 	if(cellTypes.length > 1){
+		if(currentCellType == cellTypes.length){
+			var blockDrawing = document.getElementsByName("blockDrawing");
+			if(blockDrawing[blockDrawing.length-1].checked){
+				blockDrawing[blockDrawing.length-2].checked = true;
+				currentCellType--;
+			}
+		}
+		
 		cellTypes.pop();
 		
 		var setsTable = document.getElementById("sets_table");
@@ -333,6 +372,13 @@ function remLastSet(){
 			var rem = document.getElementById("zem_set");
 			rem.disabled = true;
 		}
+	}
+	
+	var add = document.getElementById("add_set");
+	if(cellTypes.length >= maxCellTypes){
+		add.disabled = true;
+	}else{
+		add.disabled = false;
 	}
 }
 
