@@ -3,6 +3,7 @@ var boardWidth = 10;
 var boardHeight = 10;
 var boardMaxSize = 100;
 var board2D;
+var board2DInitial;
 
 // board move
 var boardMove = false;
@@ -17,6 +18,10 @@ var cellSizeDelta = 2;
 var cellClass = "cell";
 var cellBlockClass = "cell cell-block";
 var cellWallClass = "cell cell-wall";
+
+// cells
+var cellTypes = [];
+var currentCellType = 1;
 
 function setup(){
 	var settings = document.getElementById("settings");
@@ -41,7 +46,7 @@ function setup(){
 		}
 	}
 	
-	addNewSet();
+	initSets();
 	
 	var addSet = document.getElementById("add_set");
 	addSet.onclick = function(){
@@ -49,6 +54,7 @@ function setup(){
 	}
 	
 	var remSet = document.getElementById("zem_set");
+	remSet.disabled = true;
 	remSet.onclick = function(){
 		remLastSet();
 	}
@@ -100,12 +106,16 @@ function setup(){
 
 function board2DInit() {
 	board2D = [];
+	board2DInitial = [];
 	for(var j = 0; j < boardMaxSize; j++){
 		var col = [];
+		var col_ = [];
 		for(var i = 0; i < boardMaxSize; i++){
 			col[i] = 0;
+			col_[i] = 0;
 		}
 		board2D[j] = col;
+		board2DInitial[j] = col_;
 	}
 	
 	return board2D;
@@ -236,29 +246,93 @@ function MouseWheelHandler(e) {
 		}
 		
 		jss.set('div.cell', {'width': cellSize+'px', 'height': cellSize+'px'});
-		/*
-		var el = document.getElementsByClassName("cell");
-		for(var i = 0; i < el.length; i++){
-			el[i].style.width = cellSize + "px";
-			el[i].style.height = cellSize + "px";
-		}*/
 	}
 	
 	return false;
 }
 
-function addNewSet(){
-	var el = document.createElement("div");
-	el.className = "another_set";
+function initSets(){
 	var cont = document.getElementById("sets");
-	cont.appendChild(el);
+	var setsTable = document.createElement("table");
+	setsTable.setAttribute("id", "sets_table");
+	
+	var params = ["Выбор для рисования", "Цвет", "Соседей для появления", "Соседей для смерти", "Уникальный набор"];
+	var text_ID = ["setSelection_text", "setColor_text", "nToBorn_text", "nToDie_text", "uniqueSet_text"];
+	for(var j = 0; j < params.length; j++){
+		var tr = document.createElement("tr");
+		var td = document.createElement("td");
+		var p = document.createElement("p");
+		p.setAttribute("id", text_ID[j]);
+		p.innerHTML = params[j];
+		td.appendChild(p);
+		tr.appendChild(td);
+		
+		setsTable.appendChild(tr);
+	}
+	
+	cont.appendChild(setsTable);
+	
+	addNewSet();
+}
+
+function randomColor(){
+	var letters = '0123456789abcdef';
+	var ret = '#';
+	for (var i = 0; i < 6; i++) {
+		ret += letters[Math.floor(Math.random() * 16)];
+	}
+	console.log(ret);
+	return ret;
+}
+
+function addNewSet(){
+	var setsTable = document.getElementById("sets_table");
+	
+	var n = cellTypes.length;
+	
+	var types = ["radio", "color", "number", "number", "checkbox"];
+	var nToSpawn = 1 + Math.floor(Math.random() * 6);
+	var nToDie = nToSpawn + 1 + Math.floor((8 - nToSpawn) * Math.random());
+	console.log("S: " + nToSpawn + ", D: " + nToDie);
+	var values = [null, randomColor(), nToSpawn, nToDie, (Math.random >= 0.5 ? true : false)];
+	for(var i = 0; i < 5; i++){
+		var input = document.createElement("input");
+		input.setAttribute("type", types[i]);
+		if(i == 0){
+			input.setAttribute("name", "blockDrawing");
+		}
+		if(i < 4){
+			console.log("v: " + values[i]);
+			input.value = values[i];
+		}else{
+			input.checked = values[i];
+		}
+		var td = document.createElement("td");
+		td.appendChild(input);
+		setsTable.children[i].appendChild(td);
+	}
+	
+	var rem = document.getElementById("zem_set");
+	rem.disabled = false;
+	
+	cellTypes[n] = {color: values[0], spawn: nToSpawn, die: nToDie, unique: values[3]};
 }
 
 function remLastSet(){
-	var cont = document.getElementById("sets");
-	if(cont.children.length >= 2){
-		console.log(cont.lastChild);
-		cont.removeChild(cont.lastChild);
+	if(cellTypes.length > 1){
+		cellTypes.pop();
+		
+		var setsTable = document.getElementById("sets_table");
+		for(var j = 0; j < 5; j++){
+			var tr = setsTable.children[j];
+			
+			tr.removeChild(tr.lastChild);
+		}
+		
+		if(cellTypes.length <= 1){
+			var rem = document.getElementById("zem_set");
+			rem.disabled = true;
+		}
 	}
 }
 

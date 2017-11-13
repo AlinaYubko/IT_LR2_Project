@@ -103,6 +103,7 @@ div#board > table > tr > td {
 }
 
 div.cell {
+	border: 1px solid transparent;
 	width: 20px;
 	height: 20px;
 	/*border: 1px solid black;*/
@@ -112,12 +113,19 @@ div.cell-wall {
 	border: 1px solid #ff0000;
 	/*background: linear-gradient(135deg, rgba(248,80,50,1) 0%,rgba(241,111,92,1) 50%,rgba(246,41,12,1) 51%,rgba(240,47,23,1) 71%,rgba(231,56,39,1) 100%);*/
 	background: repeating-linear-gradient(135deg, 
-        rgb(240,47,23), rgb(231,56,39) 12.5%, white 0, rgb(240, 240, 240) 37.5%);
+        rgb(240,47,23), rgb(231,56,39) 12.5%, white 0, rgb(240, 240, 240) 25%);
 }
 
 div.cell-block {
 	border: 1px solid lime;
-	background: linear-gradient(135deg, rgba(180,227,145,1) 0%,rgba(97,196,25,1) 50%,rgba(180,227,145,1) 100%);
+	background: linear-gradient(135deg, rgba(0,0,0,0.36) 0%,rgba(0,0,0,0.21) 50%,rgba(0,0,0,0.36) 100%);
+	/*background: linear-gradient(135deg, rgba(180,227,145,1) 0%,rgba(97,196,25,1) 50%,rgba(180,227,145,1) 100%);*/
+}
+
+div.cell-block-init {
+	border: 1px solid lime;
+	background: linear-gradient(135deg, rgba(0,0,0,0.36) 0%,rgba(0,0,0,0.21) 50%,rgba(0,0,0,0.36) 100%), lime;
+	/*background: linear-gradient(135deg, rgba(180,227,145,1) 0%,rgba(97,196,25,1) 50%,rgba(180,227,145,1) 100%);*/
 }
 
 /* lang */
@@ -356,6 +364,25 @@ button#zem_set:active {
 	box-shadow: 0 0 0 2px #710000;
 }
 
+button#zem_set:disabled {
+	margin: 8px 8px 8px 0px;
+	padding: -8px;
+	border: 2px solid transparent;
+	box-shadow: 0 0 0 2px #transparent;
+	text-align: center;
+	font-weight:bold;
+	font-size: 24px;
+	color: #6d6d6d;
+    text-decoration: none;
+    cursor: pointer;
+ 	outline: none;
+	width:32px;
+	height: 32px;
+	background: #ececec;
+	border-radius: 16px;
+	transition: background 0.15s, box-shadow 0.15s, border 0.15s, color 0.15s;
+}
+
 button#zem_set span {
 	line-height: 11px;
 }
@@ -364,9 +391,9 @@ button#zem_set span {
 
 div#sets {
 	padding: 2px;
-	min-height: 120px;
-	height: 120px;
-	max-height: 120px;
+	min-height: 160px;
+	height: 160px;
+	max-height: 160px;
 	overflow: auto;
 	border: 1px solid #bbbbbb;
 	background: #ffffff;
@@ -382,13 +409,25 @@ div#sets {
 	border-radius: 4px;	
 }
 
-div#sets > div:nth-child(odd) {
+div#sets > table > tr {
+	height: 24px;
+}
+div#sets > table > tr > td > input {
+	width: 48px;
+}
+
+div#sets > table > tr > td > p {
+	min-width: 160px;
+	max-width: 160px;
+}
+
+div#sets > table > tr:nth-child(odd) {
 	background: #eeeeee;
 	border-top: 1px solid #e8e8e8;
 	border-bottom: 1px solid #d2d2d2;
 }
 
-div#sets > div:nth-child(even) {
+div#sets > table > tr:nth-child(even) {
 	background: #fafafa;
 	border-top: 1px solid #e8e8e8;
 	border-bottom: 1px solid #d2d2d2;
