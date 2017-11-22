@@ -177,6 +177,39 @@ div#lang {
 	overflow: hidden;
 }
 
+/* info */
+
+button#button_info {
+	width: 28px;
+	height: 28px;
+}
+
+div#info {
+	position: fixed;
+	left: 0;
+	top: 0;
+	background: rgba(0, 0, 0, 0.75);
+	/*background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.75) 25%, rgba(0,0,0,0.75) 75%, rgba(0,0,0,0.5) 100%);*/
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0 auto 0 auto;
+	display: none;
+	overflow: auto;
+	transition: background 0.5s;
+}
+
+div.info {
+	width: 500px;
+	min-height: 150px;
+	margin: 28px auto 28px auto;
+	padding: 24px;
+	background: #f9f9f9;
+	border: 1px solid #bbbbbb;
+	border-radius: 18px;
+	overflow: auto;
+}
+
 /* panel */
 
 div#panel{
@@ -276,6 +309,11 @@ div.param {
 	box-shadow: 0 0 0 2px #006b00;
 }
 
+#start_button:disabled {
+	background: #ececec;
+	color: #6d6d6d;
+}
+
 #pause_button {
 	margin: 8px 8px 8px 0px;
 	border: 2px solid transparent;
@@ -305,6 +343,11 @@ div.param {
 	box-shadow: 0 0 0 2px #0003a5;
 }
 
+#pause_button:disabled {
+	background: #ececec;
+	color: #6d6d6d;
+}
+
 #stop_button {
 	margin: 8px 0 8px 0px;
 	border: 2px solid transparent;
@@ -332,6 +375,11 @@ div.param {
 	background: #921a1a;
 	border: 2px solid white;
 	box-shadow: 0 0 0 2px #710000;
+}
+
+#stop_button:disabled {
+	background: #ececec;
+	color: #6d6d6d;
 }
 
 /* set buttons */
@@ -446,9 +494,9 @@ button#zem_set span {
 
 div#sets {
 	padding: 2px;
-	min-height: 160px;
-	height: 160px;
-	max-height: 160px;
+	min-height: 190px;
+	height: 190px;
+	max-height: 190px;
 	overflow: auto;
 	border: 1px solid #bbbbbb;
 	background: #ffffff;

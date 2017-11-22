@@ -26,6 +26,18 @@ var cellTypes = [];
 var currentCellType = 1;
 var maxCellTypes = 7;
 
+// calculations
+var wrapBorders = false;
+var activeCellType = 1;
+var calcCellTypes = [];
+var calcInitBoard;
+var calcStepBoardLast;
+var calcStepBoardNext;
+var pauseResume = true;
+
+//creation
+var textFile = null;
+
 function setup(){
 	var settings = document.getElementById("settings");
 	settings.className = 'settings-normal';
@@ -82,6 +94,7 @@ function setup(){
 	
 	window.onmousemove = function(event){
 		if(boardMove){
+			boardMSkip = true;
 			var nbMX = event.clientX;
 			var nbMY = event.clientY;
 			window.scrollBy(boardMX - nbMX, boardMY - nbMY);
@@ -104,7 +117,121 @@ function setup(){
 		onchangeBoardWH();
 	}
 	
+	var infoButton = document.getElementById("button_info");
+	infoButton.onclick = function(){
+		var info = document.getElementById("info");
+		info.style.display = "block";
+	}
+	
+	var info = document.getElementById("info");
+	info.onclick = function(){
+		var info = document.getElementById("info");
+		info.style.display = "none";
+	}
+	
+	var startButton = document.getElementById("start_button");
+	startButton.onclick = function(){
+		setControlButtonsDisabledState(true, false, false);
+		startCalculations();
+	}
+	
+	var pauseButton = document.getElementById("pause_button");
+	pauseButton.onclick = function(){
+		setControlButtonsDisabledState(true, false, false);
+		pauseResumeCalculations();
+	}
+	
+	var stopButton = document.getElementById("stop_button");
+	stopButton.onclick = function(){
+		setControlButtonsDisabledState(false, true, true);
+		stopCalculations();
+	}
+	
+	setControlButtonsDisabledState(false, true, true);
+	
+	var saveButton = document.getElementById("save_config");
+	saveButton.onclick = function(){
+		downloadJSON("config.json", boardToJSON());
+	}
+	
+	var wrapBordersCheckbox = document.getElementsByName("wrap")[0];
+	wrapBordersCheckbox.onclick = function(){
+		var wrapBordersCheckbox = document.getElementsByName("wrap")[0];
+		wrapBordersCheckbox.value = !(wrapBordersCheckbox.value);
+		console.log("Wrap boarders - " + wrapBordersCheckbox.checked);
+	}
 	//test
+}
+
+function boardToJSON(){
+	var board = {
+		wrapBorders: wrapBorders,
+		width: boardWidth,
+		height: boardHeight,
+		cells: []
+	};
+	
+	for(var j = 0; j < boardHeight; j++){
+		for(var i = 0; i < boardWidth; i++){
+			if(board2D[j][i] != 0){
+				board.cells.push({x: i, y: j, v: board2D[j][i]});
+			}
+		}
+	}
+	var text = JSON.stringify(board);
+	console.log(text);
+	var data = new Blob([text], {type: 'text/plain'});
+
+    // If we are replacing a previously generated file we need to
+    // manually revoke the object URL to avoid memory leaks.
+    if (textFile !== null) {
+      window.URL.revokeObjectURL(textFile);
+    }
+	
+	textFile = window.URL.createObjectURL(data);
+
+    return textFile;
+}
+
+function downloadJSON(filename, fileURL) {
+    var a = document.createElement('a');
+    a.style = "display: none";  
+    a.href = fileURL;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){
+        document.body.removeChild(a);  
+    }, 250);      
+}
+
+function setControlButtonsDisabledState(start_s, pause_s, stop_s){
+	var startButton = document.getElementById("start_button");
+	startButton.disabled = start_s;
+	var pauseButton = document.getElementById("pause_button");
+	pauseButton.disabled = pause_s;
+	var stopButton = document.getElementById("stop_button");
+	stopButton.disabled = stop_s;
+}
+
+function startCalculations(){
+	
+}
+
+function pauseResumeCalculations(){
+	if(pauseResume){
+		pauseResume = false;
+		console.log("Paused");
+		
+	}else{
+		pauseResume = true;
+		console.log("Resumed");
+		
+	}
+}
+
+function stopCalculations(){
+
 }
 
 function board2DInit() {
@@ -138,20 +265,24 @@ function onchangeBoardWH(){
 }
 
 function onclickCell(){
-	var that = this;
-	var x = this.getAttribute("x");
-	var y = this.getAttribute("y");
-	
-	if(board2D[y][x] == 0){
-		board2D[y][x] = currentCellType;
-		console.log("Cell [y: " + y + "; x: " + x + "] - Set to " + currentCellType + "!");
+	if(!boardMSkip){
+		var that = this;
+		var x = this.getAttribute("x");
+		var y = this.getAttribute("y");
 		
-		that.className = cellClass + " " + cellClassPrefix + (currentCellType-1);
+		if(board2D[y][x] == 0){
+			board2D[y][x] = currentCellType;
+			console.log("Cell [y: " + y + "; x: " + x + "] - Set to " + currentCellType + "!");
+			
+			that.className = cellClass + " " + cellClassPrefix + (currentCellType-1);
+		}else{
+			board2D[y][x] = 0;
+			console.log("Cell [y: " + y + "; x: " + x + "] - Unset.");
+			
+			that.className = cellClass;
+		}
 	}else{
-		board2D[y][x] = 0;
-		console.log("Cell [y: " + y + "; x: " + x + "] - Unset.");
-		
-		that.className = cellClass;
+		boardMSkip = false;
 	}
 }
 
@@ -259,8 +390,8 @@ function initSets(){
 	var setsTable = document.createElement("table");
 	setsTable.setAttribute("id", "sets_table");
 	
-	var params = ["Выбор для рисования", "Цвет", "Соседей для появления", "Соседей для смерти", "Уникальный набор"];
-	var text_ID = ["setSelection_text", "setColor_text", "nToBorn_text", "nToDie_text", "uniqueSet_text"];
+	var params = ["Выбор для рисования", "Цвет", "Соседей для появления", "Соседей для выживания", "Соседей для смерти", "Уникальный набор"];
+	var text_ID = ["setSelection_text", "setColor_text", "nToBorn_text", "nToSurvive_text", "nToDie_text", "uniqueSet_text"];
 	for(var j = 0; j < params.length; j++){
 		var tr = document.createElement("tr");
 		var td = document.createElement("td");
@@ -295,12 +426,13 @@ function addNewSet(){
 	
 	var n = cellTypes.length;
 	
-	var types = ["radio", "color", "number", "number", "checkbox"];
-	var nToSpawn = 1 + Math.floor(Math.random() * 6);
+	var types = ["radio", "color", "number", "number", "number", "checkbox"];
+	var nToSpawn = 3 + Math.floor(Math.random() * 5);
+	var nToSurvive = 2 + Math.floor((nToSpawn - 3)*Math.random());
 	var nToDie = nToSpawn + 1 + Math.floor((8 - nToSpawn) * Math.random());
 	//console.log("S: " + nToSpawn + ", D: " + nToDie);
-	var values = [null, null, nToSpawn, nToDie, (Math.random >= 0.5 ? true : false)];
-	for(var i = 0; i < 5; i++){
+	var values = [null, null, nToSpawn, nToSurvive, nToDie, (Math.random() >= 0.5 ? true : false)];
+	for(var i = 0; i < 6; i++){
 		var input = document.createElement("input");
 		input.setAttribute("type", types[i]);
 		if(i == 0){
@@ -321,7 +453,7 @@ function addNewSet(){
 			input.className = ("cell-" + n);
 			input.style = "width: 16px; height: 16px; margin: auto;";
 		}
-		if(i < 4){
+		if(i < 5){
 			//console.log("v: " + values[i]);
 			input.value = values[i];
 		}else{
@@ -362,7 +494,7 @@ function remLastSet(){
 		cellTypes.pop();
 		
 		var setsTable = document.getElementById("sets_table");
-		for(var j = 0; j < 5; j++){
+		for(var j = 0; j < 6; j++){
 			var tr = setsTable.children[j];
 			
 			tr.removeChild(tr.lastChild);
