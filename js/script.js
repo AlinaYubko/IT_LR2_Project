@@ -20,6 +20,7 @@ var cellClassPrefix = "cell cell-";
 var cellBlockClass = "cell cell-block";
 var cellWallClass = "cell cell-wall";
 var cellStyleBGPart = "linear-gradient(135deg, rgba(0,0,0,0.36) 0%,rgba(0,0,0,0.21) 50%,rgba(0,0,0,0.36) 100%)";
+var cell_id = "cell-Y-X";
 
 // cells
 var cellTypes = [];
@@ -174,23 +175,87 @@ function setup(){
 			if(data.configs[i].json != null){
 				console.log("Asynchronically loading '" + data.configs[i].name + "'...");
 				$.getJSON(data.configs[i].json, function(cdata){
-					console.log("..." + cdata.name + " successfully loaded");
+					console.log("..." + cdata.name + " successfully loaded");	
 					boardConfigs.push(cdata);
 					var configsList = document.getElementById("config");
 					var opt = document.createElement("option");
 					opt.value = cdata.name;
-					opt.innerHTML = cdata.name;
+					opt.innerHTML = cdata.visName;
 					configsList.appendChild(opt);
 				});
 			}
 		}
 	});	
+	
+	var selectConfig = document.getElementById("select_config");
+	selectConfig.onclick = function(){
+		var configsList = document.getElementById("config");
+		for(var i = 0; i < boardConfigs.length; i++){
+			if(boardConfigs[i].name === configsList.value){
+				loadBoard(boardConfigs[i]);
+				break;
+			}
+		}
+	}
 	//test
+}
+
+function loadBoard(board){
+	var wrapBordersCheckbox = document.getElementsByName("wrap")[0];
+	wrapBordersCheckbox.value = board.wrapBorders;
+	wrapBorders = board.wrapBorders;
+	var inputWidth = document.getElementsByName("width")[0];
+	inputWidth.value = board.width;
+	var inputHeight = document.getElementsByName("height")[0];
+	inputHeight.value = board.height;
+	onchangeBoardWH();
+	
+	cleanBoard();
+	
+	for(var i = 0; i < board.cells.length; i++){
+		var x = board.cells[i].x;
+		var y = board.cells[i].y;
+		var v = board.cells[i].v;
+		board2D[y][x] = v;
+		board2DInitial[y][x] = v;
+		
+		for(var j = 0; j < boardMaxSize; j++){
+			var cID = getCellID(y, x);
+			var cell = document.getElementById(cID);
+			if(cell !== null){
+				if(v > 0){
+					cell.className = cellClassPrefix + (v-1);
+				}else if(v < 0){
+					cell.className = cellWallClass;
+				}
+			}
+		}
+	}
+}
+
+function getCellID(j, i){
+	return cell_id.replace("Y", j).replace("X", i);
+}
+
+function cleanBoard(){
+	for(var j = 0; j < boardMaxSize; j++){
+		for(var i = 0; i < boardMaxSize; i++){
+			board2D[j][i] = 0;
+			board2DInitial[j][i] = 0;
+			
+			var cID = getCellID(j, i);
+			var cell = document.getElementById(cID);
+			if(cell !== null){
+				cell.className = cellClass;
+			}
+		}
+	}
 }
 
 function boardToJSON(){
 	var board = {
-		name: "Default config name",
+		name: "conf_name",
+		visName: "Default config name",
 		wrapBorders: wrapBorders,
 		width: boardWidth,
 		height: boardHeight,
@@ -300,7 +365,7 @@ function onclickCell(){
 			board2D[y][x] = currentCellType;
 			console.log("Cell [y: " + y + "; x: " + x + "] - Set to " + currentCellType + "!");
 			
-			that.className = cellClass + " " + cellClassPrefix + (currentCellType-1);
+			that.className = cellClassPrefix + (currentCellType-1);
 		}else{
 			board2D[y][x] = 0;
 			console.log("Cell [y: " + y + "; x: " + x + "] - Unset.");
@@ -365,6 +430,7 @@ function boardSet(bWidth, bHeight){
 			cell.className = getCellClass(j, i)
 			cell.setAttribute("y", j);
 			cell.setAttribute("x", i);
+			cell.setAttribute("id", getCellID(j, i));
 			cell.onclick = onclickCell;
 			cell.addEventListener("contextmenu", function(event){ onrightclickCell(event); });
 			td.appendChild(cell);
