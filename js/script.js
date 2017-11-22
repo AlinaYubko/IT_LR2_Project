@@ -172,7 +172,9 @@ function setup(){
 	$.getJSON(configsJSON, function(data){
 		for(var i = 0; i < data.configs.length; i++){
 			if(data.configs[i].json != null){
+				console.log("Asynchronically loading '" + data.configs[i].name + "'...");
 				$.getJSON(data.configs[i].json, function(cdata){
+					console.log("..." + cdata.name + " successfully loaded");
 					boardConfigs.push(cdata);
 					var configsList = document.getElementById("config");
 					var opt = document.createElement("option");
