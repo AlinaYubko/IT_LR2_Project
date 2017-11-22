@@ -38,6 +38,10 @@ var pauseResume = true;
 //creation
 var textFile = null;
 
+//misc
+var configsJSON = "config/configs.json";
+var boardConfigs = [];
+
 function setup(){
 	var settings = document.getElementById("settings");
 	settings.className = 'settings-normal';
@@ -160,11 +164,31 @@ function setup(){
 		wrapBordersCheckbox.value = !(wrapBordersCheckbox.value);
 		console.log("Wrap boarders - " + wrapBordersCheckbox.checked);
 	}
+	
+	var configsList = document.getElementById("config");
+	while (configsList.hasChildNodes()) {
+		configsList.removeChild(configsList.lastChild);
+	}
+	$.getJSON(configsJSON, function(data){
+		for(var i = 0; i < data.configs.length; i++){
+			if(data.configs[i].json != null){
+				$.getJSON(data.configs[i].json, function(cdata){
+					boardConfigs.push(cdata);
+					var configsList = document.getElementById("config");
+					var opt = document.createElement("option");
+					opt.value = cdata.name;
+					opt.innerHTML = cdata.name;
+					configsList.appendChild(opt);
+				});
+			}
+		}
+	});	
 	//test
 }
 
 function boardToJSON(){
 	var board = {
+		name: "Default config name",
 		wrapBorders: wrapBorders,
 		width: boardWidth,
 		height: boardHeight,
