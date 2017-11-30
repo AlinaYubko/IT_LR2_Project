@@ -22,6 +22,6 @@
     ],
     "misc": [
         {"collapse_text": "Свернуть"},
-        {"uncollpase_text": "Развернуть"},
+        {"uncollpase_text": "Развернуть"}
     ]
 }
