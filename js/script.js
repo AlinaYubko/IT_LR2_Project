@@ -50,6 +50,7 @@ var collapseIT = '<span>▴ Свернуть</span>';
 var collapseIT_dummy = '<span>▴ __file__</span>';
 var uncollapseIT = '<span>▾ Развернуть</span>';
 var uncollapseIT_dummy = '<span>▾ __file__</span>';
+var optPrefixId = "opt-";
 
 function setup(){
 	var settings = document.getElementById("settings");
@@ -186,6 +187,7 @@ function setup(){
 					boardConfigs.push(cdata);
 					var configsList = document.getElementById("config");
 					var opt = document.createElement("option");
+                    opt.id = optPrefixId + cdata.name;
 					opt.value = cdata.name;
 					opt.innerHTML = cdata.visName;
 					configsList.appendChild(opt);
@@ -252,6 +254,18 @@ function setLanguageFromData(data){
         collapseIT = collapseIT_dummy.replace(fDummy, data.misc.collapse_text);
         uncollapseIT = uncollapseIT_dummy.replace(fDummy, data.misc.uncollapse_text);
         collapse.innerHTML = (col_state == 0 ? collapseIT : uncollapseIT);
+        
+        // sets
+        for(var i = 0; i < data.sets.length; i++){
+            var pair = data.sets[i];
+            var el = document.getElementById(optPrefixId + pair[0]);
+            console.log("opt..." + pair[0]);
+            if(el){
+                el.innerHTML = pair[1];
+            }else{
+                console.log("language error on key: '" + pair[0] + "', value: '" + pair[1] + "'");
+            }
+        }
 }
 
 function loadBoard(board){

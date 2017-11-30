@@ -23,5 +23,14 @@
     "misc": {
         "collapse_text": "Свернуть",
         "uncollapse_text": "Развернуть"
-    }
+    },
+    "sets": [
+        ["glider", "Планер"],
+        ["eater_2", "Пожиратель 2"],
+        ["boat_tie", "Лодочный бант"],
+        ["ship_tie", "Корабельный бант"],
+        ["honey_farm", "Пасека"],
+        ["hive", "Улей"],
+        ["glider_x_glider", "Планер X Планер"]
+    ]
 }
