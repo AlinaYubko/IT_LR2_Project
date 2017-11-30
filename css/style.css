@@ -163,6 +163,16 @@ div.cell-block-init {
 	background: linear-gradient(135deg, rgba(0,0,0,0.36) 0%,rgba(0,0,0,0.21) 50%,rgba(0,0,0,0.36) 100%), #9900ff;
 }
 
+div#info_button {
+    padding: 4px;
+    position: fixed;
+    right: 120px;
+    top: -1px;
+    background: #f9f9f9;
+    border: 1px solid #bbbbbb;
+    border-radius: 0 0 18px 18px;
+    overflow: hidden;
+}
 
 /* lang */
 
@@ -200,7 +210,8 @@ div#info {
 }
 
 div.info {
-	width: 500px;
+	min-width: 500px;
+	max-width: 750px;
 	min-height: 150px;
 	margin: 28px auto 28px auto;
 	padding: 24px;
@@ -208,6 +219,28 @@ div.info {
 	border: 1px solid #bbbbbb;
 	border-radius: 18px;
 	overflow: auto;
+}
+
+.info p {
+	font-weight: normal;
+	line-height: normal;
+	font-size: 18px;
+	text-indent: 2em;
+	text-align: justify;
+	margin: 1em;
+}
+
+.info ul {
+	 list-style-type: none;
+}
+
+.info li {
+	font-weight: normal;
+	line-height: normal;
+	font-size: 18px;
+	text-align: left;
+	margin: 0.5em 1em;
+
 }
 
 /* panel */

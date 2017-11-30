@@ -44,10 +44,10 @@ var configsJSON = "config/configs.json";
 var boardConfigs = [];
 var langJSON = "language/__file__.json";
 var fDummy = "__file__";
-var collapseIT = '<span>&#x25B4; Свернуть</span>';
-var collapseIT_dummy = '<span>&#x25B4; __file__</span>';
-var uncollpaseIT = '<span>&#x25BE; Развернуть</span>';
-var uncollpaseIT_dummy = '<span>&#x25BE; __file__</span>';
+var collapseIT = '<span>▴ Свернуть</span>';
+var collapseIT_dummy = '<span>▴ __file__</span>';
+var uncollapseIT = '<span>▾ Развернуть</span>';
+var uncollapseIT_dummy = '<span>▾ __file__</span>';
 
 function setup(){
 	var settings = document.getElementById("settings");
@@ -63,7 +63,7 @@ function setup(){
 		console.log(settings.className);
 		if(settings.className == '' || settings.className == collapseITClass){
 			settings.className = uncollapseITClass;
-			this.innerHTML = uncollpaseIT;
+			this.innerHTML = uncollapseIT;
 		}else{
 			settings.className = collapseITClass;
 			this.innerHTML = collapseIT;
@@ -241,12 +241,12 @@ function setLanguageFromData(data){
         // misc
         var collapse = document.getElementById("collapse");
         var col_state = 0;
-        if(collapse.innerHTML == uncollpaseIT){
+        if(collapse.innerHTML == uncollapseIT){
             col_state = 1;
         }
-        collapseIT = collapseIT_dummy.replace(fDummy, data.misc["collapse_text"]);
-        uncollpaseIT = uncollpaseIT_dummy.replace(fDummy, data.misc["uncollapse_text"]);
-        collapse.innerHTML = (col_state == 0 ? collapseIT : uncollpaseIT);
+        collapseIT = collapseIT_dummy.replace(fDummy, data.misc.collapse_text);
+        uncollapseIT = uncollapseIT_dummy.replace(fDummy, data.misc.uncollapse_text);
+        collapse.innerHTML = (col_state == 0 ? collapseIT : uncollapseIT);
 }
 
 function loadBoard(board){
