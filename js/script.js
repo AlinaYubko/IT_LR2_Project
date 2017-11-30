@@ -212,6 +212,8 @@ function setup(){
         setLanguageTo("my");
     }
     
+    setLanguageTo("ru");
+    
 	//test
 }
 
