@@ -427,6 +427,8 @@ function stepCalculation(){
                     if(n == rct_spawn){
                         b2D[j][i] = realCTF;
                     }
+                }else if(c == -1){
+                    b2D[j][i] = -1;
                 }
             }
         }
