@@ -35,6 +35,8 @@ var calcInitBoard;
 var calcStepBoardLast;
 var calcStepBoardNext;
 var pauseResume = true;
+var calcTimeMS = 250;
+var calcActive;
 
 //creation
 var textFile = null;
@@ -168,6 +170,7 @@ function setup(){
 		var wrapBordersCheckbox = document.getElementsByName("wrap")[0];
 		wrapBordersCheckbox.value = !(wrapBordersCheckbox.value);
 		console.log("Wrap boarders - " + wrapBordersCheckbox.checked);
+        wrapBorders = wrapBordersCheckbox.checked;
 	}
 	
 	var configsList = document.getElementById("config");
@@ -288,11 +291,13 @@ function getCellID(j, i){
 	return cell_id.replace("Y", j).replace("X", i);
 }
 
-function cleanBoard(){
+function cleanBoard(visual = false){
 	for(var j = 0; j < boardMaxSize; j++){
 		for(var i = 0; i < boardMaxSize; i++){
-			board2D[j][i] = 0;
-			board2DInitial[j][i] = 0;
+            if(visual == false){
+                board2D[j][i] = 0;
+                board2DInitial[j][i] = 0;
+            }
 			
 			var cID = getCellID(j, i);
 			var cell = document.getElementById(cID);
@@ -357,23 +362,219 @@ function setControlButtonsDisabledState(start_s, pause_s, stop_s){
 }
 
 function startCalculations(){
-	
+    console.log("start >>>");
+    
+	copyBoard(board2D, board2DInitial);
+    
+    calcActive = true;
+    
+    // copy calc cell types
+    updateSetsData();
+    calcCellTypes = [];
+    for(var i = 0; i < cellTypes.length; i++){
+        calcCellTypes.push(cellTypes[i]);
+    }
+    
+    console.log(calcCellTypes);
+    
+    activeCellType = 0;
+    
+    stepCalculationTO();
+    
+}
+
+function stepCalculationTO(){
+    console.log("step...");
+    stepCalculation();
+    
+    if(calcActive){
+        setTimeout(stepCalculationTO, calcTimeMS);
+    }
+}
+
+function stepCalculation(){    
+    var b2D = newBoardWithSizeFrom(board2D);
+
+    var lim_k = calcCellTypes.length;
+    for(var k = 0; k < lim_k; k++){
+        var realCT = (k + activeCellType) % lim_k;
+        var realCTF = realCT + 1;
+        console.log("calculating for the cell type (" + realCTF + ")");
+        var rct_unique = calcCellTypes[realCT].unique;
+        var rct_spawn = calcCellTypes[realCT].spawn;
+        var rct_surv = calcCellTypes[realCT].survive;
+        var rct_die = calcCellTypes[realCT].die;
+        
+        for(var j = 0; j < boardHeight; j++){
+            for(var i = 0; i < boardWidth; i++){
+                var c = board2D[j][i];
+                var n = numOfNeighbours(realCTF, j, i, rct_unique);
+
+                if(c == realCTF){
+					// may survive
+                	b2D[j][i] = realCTF;
+                	
+                    // dies? - not enough
+                    if(n < rct_surv){
+                        b2D[j][i] = 0;
+                    }
+                    // dies? - too much
+                    if(n >= rct_die){
+                        b2D[j][i] = 0;
+                    }
+                }else if(c == 0){
+                    // spawns?
+                    if(n == rct_spawn){
+                        b2D[j][i] = realCTF;
+                    }
+                }
+            }
+        }
+    }
+    
+    displayBoard(b2D);
+    
+    copyBoard(b2D, board2D);
+
+    activeCellType++;
+    if(activeCellType >= calcCellTypes.length){
+        activeCellType = 0;
+    }
+    console.log("active cell: " + activeCellType);
+}
+
+function getCell(j, i){
+    return document.getElementById(getCellID(j, i));
+}
+
+function setCellTo(j, i, v){
+    var cell = getCell(j, i);
+    if(cell !== null){
+        if(v > 0){
+            cell.className = cellClassPrefix + (v-1);
+        }else if(v < 0){
+            cell.className = cellWallClass;
+        }else{
+        	cell.className = cellClass;
+        }
+    }
+}
+
+function displayBoard(board){
+    for(var j = 0; j < boardHeight; j++){
+        for(var i = 0; i < boardWidth; i++){
+            setCellTo(j, i, board[j][i]);
+        }
+    }
+}
+
+function cellOn(y, x){
+    // clipping -
+	if(x < 0){
+		if(wrapBorders){
+			x = boardWidth + x;
+		}else{
+			return 0;
+		}
+	}
+
+	if(y < 0){
+		if(wrapBorders){
+			y = boardHeight + y;
+		}else{
+			return 0;
+		}
+	}
+    
+    // clipping +
+    if(x >= boardWidth){
+        if(wrapBorders){
+			x = boardWidth - x;
+		}else{
+			return 0;
+		}
+    }
+    
+    if(y >= boardHeight){
+		if(wrapBorders){
+			y = boardHeight - y;
+		}else{
+			return 0;
+		}
+	}
+    
+    return board2D[y][x];
+}
+
+function numOfNeighbours(id, y, x, unique){
+    var n = 0;
+    for(var j = -1; j < 2; j++){
+        for(var i = -1; i < 2; i++){
+            if(i != 0 || j != 0){
+            	var ny = (y + j);
+            	var nx = (x + i)
+                var c = cellOn(ny, nx);
+                // not a wall or an empty cell
+                if(c > 0){
+                    if(unique){
+                        if(id == c){
+                            n++;
+                        }
+                    }else{
+                        n++;
+                    }
+                }
+            }
+        }
+    }
+    
+    return n;
+}
+
+function copyBoard(src, dest){
+    for(var j = 0; j < src.length; j++){
+        for(var i = 0; i < src.length; i++){
+            dest[j][i] = src[j][i];
+        }
+    }
+}
+
+function newBoardWithSizeFrom(src){
+    var newBoard = [];
+    for(var j = 0; j < src.length; j++){
+        var row = [];
+        for(var i = 0; i < src.length; i++){
+            row.push(0);
+        }
+        newBoard.push(row);
+    }
+    
+    return newBoard;
 }
 
 function pauseResumeCalculations(){
 	if(pauseResume){
 		pauseResume = false;
 		console.log("Paused");
-		
+        calcActive = false;
 	}else{
 		pauseResume = true;
 		console.log("Resumed");
-		
+        calcActive = true;
+        
+        stepCalculationTO();
 	}
 }
 
 function stopCalculations(){
+    calcActive = false;
+    
+    setTimeout(function(){
+		copyBoard(board2DInitial, board2D);
+		displayBoard(board2D);
 
+		console.log("stop.");
+    	}, 2*calcTimeMS);
 }
 
 function board2DInit() {
@@ -468,8 +669,8 @@ function boardSet(bWidth, bHeight){
 	}
 	table = document.createElement('table');
 	
-	boardWidth = bWidth;
-	boardHeight = bHeight;
+	boardWidth = parseInt(bWidth);
+	boardHeight = parseInt(bHeight);
 	//board2D = 
 	
 	for(var j = 0; j < boardHeight; j++){
@@ -564,6 +765,18 @@ function randomColor(){
 	return ret;
 }
 
+function updateSetsData(){
+    var setsTable = document.getElementById("sets_table");
+    var rows = setsTable.children;
+    //cellTypes[n] = {color: values[0], spawn: nToSpawn, survive: nToSurvive, die: nToDie, unique: values[5]};
+    for(var i = 0; i < cellTypes.length; i++){
+        cellTypes[i].spawn = parseInt(rows[2].children[i+1].children[0].value);
+        cellTypes[i].survive = parseInt(rows[3].children[i+1].children[0].value);
+        cellTypes[i].die = parseInt(rows[4].children[i+1].children[0].value);
+        cellTypes[i].unique = rows[5].children[i+1].children[0].checked;
+    }
+}
+
 function addNewSet(){
 	var setsTable = document.getElementById("sets_table");
 	
@@ -610,7 +823,7 @@ function addNewSet(){
 	var rem = document.getElementById("zem_set");
 	rem.disabled = false;
 	
-	cellTypes[n] = {color: values[0], spawn: nToSpawn, die: nToDie, unique: values[3]};
+	cellTypes[n] = {color: values[0], spawn: nToSpawn, survive: nToSurvive, die: nToDie, unique: values[5]};
 	
 	var add = document.getElementById("add_set");
 	if(n >= maxCellTypes){
