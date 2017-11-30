@@ -42,14 +42,18 @@ var textFile = null;
 //misc
 var configsJSON = "config/configs.json";
 var boardConfigs = [];
+var langJSON = "language/__file__.json";
+var fDummy = "__file__";
+var collapseIT = '<span>&#x25B4; Свернуть</span>';
+var collapseIT_dummy = '<span>&#x25B4; __file__</span>';
+var uncollpaseIT = '<span>&#x25BE; Развернуть</span>';
+var uncollpaseIT_dummy = '<span>&#x25BE; __file__</span>';
 
 function setup(){
 	var settings = document.getElementById("settings");
 	settings.className = 'settings-normal';
 	
-	var collapseIT = '<span>&#x25B4; Свернуть</span>';
 	var collapseITClass = 'settings-normal';
-	var uncollpaseIT = '<span>&#x25BE; Развернуть</span>';
 	var uncollapseITClass = 'settings-collapsed';
 	
 	var collapse = document.getElementById("collapse");
@@ -185,7 +189,7 @@ function setup(){
 				});
 			}
 		}
-	});	
+	});
 	
 	var selectConfig = document.getElementById("select_config");
 	selectConfig.onclick = function(){
@@ -197,7 +201,52 @@ function setup(){
 			}
 		}
 	}
+    
+    var langRU = document.getElementById("ru");
+    langRU.onclick = function(){
+        setLanguageTo("ru");
+    }
+    
+    var langMY = document.getElementById("my");
+    langMY.onclick = function(){
+        setLanguageTo("my");
+    }
+    
 	//test
+}
+
+function setLanguageTo(lang){
+    var newLang = langJSON.replace(fDummy, lang);
+    console.log("Loading language from file: " + newLang);
+    $.getJSON(newLang, function(data){
+        setLanguageFromData(data);
+    });
+    
+    console.log("Set language to <" + lang + ">");
+}
+
+function setLanguageFromData(data){
+    // by id's
+        for(var i = 0; i < data.id.length; i++){
+            var pair = data.id[i];
+            var el = document.getElementById(pair[0]);
+            console.log("..." + pair[0]);
+            if(el){
+                el.innerHTML = pair[1];
+            }else{
+                console.log("language error on key: '" + pair[0] + "', value: '" + pair[1] + "'");
+            }
+        }
+        
+        // misc
+        var collapse = document.getElementById("collapse");
+        var col_state = 0;
+        if(collapse.innerHTML == uncollpaseIT){
+            col_state = 1;
+        }
+        collapseIT = collapseIT_dummy.replace(fDummy, data.misc["collapse_text"]);
+        uncollpaseIT = uncollpaseIT_dummy.replace(fDummy, data.misc["uncollapse_text"]);
+        collapse.innerHTML = (col_state == 0 ? collapseIT : uncollpaseIT);
 }
 
 function loadBoard(board){
