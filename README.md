@@ -1,4 +1,6 @@
-# IT_LR2_Project
+![Preview](https://alinayubko.github.io/IT_LR2_Project/preview.gif)
+
+# IT_LR2_Project - Клеточный автомат
 SPA-приложение по курсу ИТ
 
 [Открыть приложение](https://alinayubko.github.io/IT_LR2_Project/)
